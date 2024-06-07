@@ -1,0 +1,51 @@
+Ejercicio H
+@startuml
+participant "Cliente" as Cliente
+participant "Registro" as Registro
+participant "CatalogoProductos" as CatalogoProductos
+participant "Venta" as Venta
+participant "EspecificacionProducto" as EspecificacionProducto
+
+Cliente -> Registro: introducirArticulo(id, cant)
+Registro -> CatalogoProductos: getEspecificacion(id)
+CatalogoProductos -> Registro: espec
+Registro -> Venta: crearLineaVenta(espec, cant)
+Venta -> Venta: añadir(new LineaVenta(espec, cant))
+
+@enduml
+
+
+
+Ejercicio I
+@startuml
+[*] --> PedidoColocado
+
+state PedidoColocado {
+    [*] --> ValidarPedido
+    ValidarPedido --> CobrarPago : validación exitosa
+    CobrarPago --> PagadoPorAdelantado
+}
+
+state PagadoPorAdelantado {
+    [*] --> ObtenerProducto
+    ObtenerProducto --> EnviarUrgente : urgente
+    ObtenerProducto --> EnviarOrdinario : ordinario
+}
+
+state EnviarUrgente {
+    [*] --> PedidoRealizado
+    PedidoRealizado --> DarCervezas : completado
+}
+
+state EnviarOrdinario {
+    [*] --> PedidoRealizado
+    PedidoRealizado --> DarCervezas : completado
+}
+
+state DarCervezas {
+    [*] --> AñadirListaSatisfechos
+    AñadirListaSatisfechos --> EnviarRecibo : cliente satisfecho
+    EnviarRecibo --> [*]
+}
+
+@enduml
